@@ -26,7 +26,7 @@ def _extract_post_from_element(element):
 def extract_posts(url):
     driver = webdriver.Firefox()
     driver.get(url)
-    element = WebDriverWait(driver, 30).until(
+    WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, POST_XPATH))
     )
     elements = driver.find_elements_by_xpath(POST_XPATH)
