@@ -13,4 +13,4 @@ RUN GK_VERSION=$(if [ ${GECKODRIVER_VERSION:-latest} = "latest" ]; then echo $(w
     && ln -fs /opt/geckodriver-$GK_VERSION /usr/bin/geckodriver
 RUN pip install -r requirements.txt
 COPY WeiboScraper/src .
-ENTRYPOINT python coordinator.py
+ENTRYPOINT ["python", "coordinator.py"]
