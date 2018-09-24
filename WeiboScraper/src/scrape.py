@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from datetime import datetime
+import logging
 
 import re
 
@@ -28,11 +29,12 @@ def _extract_post_from_element(element):
     }
 
 def extract_posts(url):
-    driver = webdriver.Firefox()
-    driver.get(url)
-    WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, POST_XPATH))
-    )
-    elements = driver.find_elements_by_xpath(POST_XPATH)
-    posts = [_extract_post_from_element(element) for element in elements]
-    return posts
+    try:
+        driver = webdriver.Firefox()
+        driver.get(url)
+        elements = driver.find_elements_by_xpath(POST_XPATH)
+        posts = [_extract_post_from_element(element) for element in elements]
+        return posts
+    except Exception as e:
+        logging.error(e)
+        return []
