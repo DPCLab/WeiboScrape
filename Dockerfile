@@ -19,7 +19,7 @@ RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.22.0/ge
 # create symlinks to chromedriver and geckodriver (to the PATH)
 RUN chmod 777 /usr/bin/geckodriver
 WORKDIR /usr/src/app
-COPY WeiboScraper/requirements.txt ./
+COPY WeiboScrape/requirements.txt ./
 RUN pip install -r requirements.txt
-COPY WeiboScraper/src .
+COPY WeiboScrape/src .
 ENTRYPOINT ["python", "coordinator.py"]
