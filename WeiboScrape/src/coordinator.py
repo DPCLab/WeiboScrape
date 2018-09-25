@@ -4,8 +4,12 @@ from multiprocessing import Pool
 import sys
 import logging
 import traceback
+import opts
 
-logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logLevel = logging.INFO
+if opts.is_debug():
+    logLevel = logging.DEBUG
+logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logLevel)
 
 def _pull_url(url):
     try:
@@ -24,7 +28,7 @@ def pull_new_posts():
     for post_group in post_groups:
         cloud.upsert_posts(post_group[0])
         cloud.mark_url_as_scraped(post_group[1])
-    logging.info("Pull complete!")
+    logging.info("Pull complete! Found %s posts." % sum([len(post_group[0]) for post_group in post_groups]))
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -32,4 +36,3 @@ if __name__ == "__main__":
         sys.exit(0)
     if sys.argv[1] == "pull":
         pull_new_posts()
-    

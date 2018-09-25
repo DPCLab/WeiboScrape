@@ -6,7 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from datetime import datetime
 import logging
-
+import traceback
+import opts
 import re
 
 POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
@@ -30,11 +31,15 @@ def _extract_post_from_element(element):
 
 def extract_posts(url):
     try:
-        driver = webdriver.Firefox()
+        options = webdriver.FirefoxOptions()
+        if not opts.show_head():
+            options.add_argument("--headless")
+        driver = webdriver.Firefox(firefox_options=options)
         driver.get(url)
         elements = driver.find_elements_by_xpath(POST_XPATH)
         posts = [_extract_post_from_element(element) for element in elements]
         return posts
     except Exception as e:
         logging.error(e)
+        traceback.print_exc()
         return []

@@ -12,11 +12,9 @@ RUN apt-get update && apt-get install -yq \
     libz-dev \
     xclip \
     wget
-# GeckoDriver v0.19.1
 RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz" -O /tmp/geckodriver.tgz \
     && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ \
     && rm /tmp/geckodriver.tgz
-# create symlinks to chromedriver and geckodriver (to the PATH)
 RUN chmod 777 /usr/bin/geckodriver
 WORKDIR /usr/src/app
 COPY WeiboScrape/requirements.txt ./
