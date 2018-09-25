@@ -1,4 +1,4 @@
-FROM python:3-stretch
+FROM python:3
 RUN apt-get update && apt-get install -yq \
     firefox-esr \
     git-core \
@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -yq \
     libxml2-dev \
     libxslt-dev \
     libz-dev \
-    xclip
+    xclip \
+    wget
 # GeckoDriver v0.19.1
 RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz" -O /tmp/geckodriver.tgz \
     && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ \
