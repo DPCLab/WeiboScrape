@@ -3,6 +3,7 @@ import scrape
 from multiprocessing import Pool
 import sys
 import logging
+import traceback
 
 logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
@@ -13,6 +14,7 @@ def _pull_url(url):
         return (posts, url)
     except Exception as e:
         logging.exception(e)
+        traceback.print_exc()
 
 def pull_new_posts():
     logging.info("Pulling new posts...")
