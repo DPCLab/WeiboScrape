@@ -9,6 +9,7 @@ import logging
 import traceback
 import opts
 import re
+import time
 from pyvirtualdisplay import Display
 
 POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
@@ -42,7 +43,8 @@ def extract_posts(url):
         if not opts.show_head():
             options.add_argument("--headless")
         binary = webdriver.firefox.firefox_binary.FirefoxBinary(firefox_path="/usr/bin/firefox")
-        driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)
+        time.sleep(10)
+        driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary, log_path="/var/log/geckodriver.log")
         driver.get(url)
         elements = driver.find_elements_by_xpath(POST_XPATH)
         posts = [_extract_post_from_element(element) for element in elements]
