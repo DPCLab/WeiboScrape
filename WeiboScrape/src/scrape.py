@@ -10,13 +10,8 @@ import traceback
 import opts
 import re
 import time
-from pyvirtualdisplay import Display
 
 POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
-
-display = Display(visible=0, size=(1280, 1024))
-display.start()
-
 
 def _extract_post_from_element(element):
     html = element.get_attribute("outerHTML")
@@ -42,7 +37,6 @@ def extract_posts(url):
         options = webdriver.ChromeOptions()
         if not opts.show_head():
             options.set_headless(headless=True)
-        options.add_argument("disable-infobars")
         options.add_argument("--disable-extensions")
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-dev-shm-usage")
