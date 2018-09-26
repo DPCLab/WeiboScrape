@@ -41,7 +41,8 @@ def extract_posts(url):
         options = webdriver.FirefoxOptions()
         if not opts.show_head():
             options.add_argument("--headless")
-        driver = webdriver.Firefox(firefox_options=options)
+        binary = webdriver.firefox.firefox_binary.FirefoxBinary(firefox_path="/usr/bin/firefox")
+        driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)
         driver.get(url)
         elements = driver.find_elements_by_xpath(POST_XPATH)
         posts = [_extract_post_from_element(element) for element in elements]
