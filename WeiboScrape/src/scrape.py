@@ -13,7 +13,7 @@ from pyvirtualdisplay import Display
 
 POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
 
-display = Display(visible=0, size=(800, 600))
+display = Display(visible=0, size=(1280, 1024))
 display.start()
 
 

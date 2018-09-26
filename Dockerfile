@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM python:3-stretch
 RUN apt-get update && apt-get install -yq \
     firefox-esr \
     git-core \
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -yq \
     libz-dev \
     xclip \
     wget
-RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz" -O /tmp/geckodriver.tgz \
+RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.21.0/geckodriver-v0.21.0-linux64.tar.gz" -O /tmp/geckodriver.tgz \
     && tar zxf /tmp/geckodriver.tgz -C /usr/bin/ \
     && rm /tmp/geckodriver.tgz
 RUN chmod 777 /usr/bin/geckodriver

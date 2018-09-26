@@ -36,3 +36,6 @@ if __name__ == "__main__":
         sys.exit(0)
     if sys.argv[1] == "pull":
         pull_new_posts()
+    if sys.argv[1] == "test_connection":
+        import requests
+        logging.info("Connection test result: %s" % requests.get("http://captive.apple.com"))
