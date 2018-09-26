@@ -42,8 +42,11 @@ def extract_posts(url):
         options = webdriver.ChromeOptions()
         if not opts.show_head():
             options.set_headless(headless=True)
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument("disable-infobars")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
         driver = webdriver.Chrome(chrome_options=options)
         driver.get(url)
         elements = driver.find_elements_by_xpath(POST_XPATH)
