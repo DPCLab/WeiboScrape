@@ -9,14 +9,20 @@ import logging
 import traceback
 import opts
 import re
+from pyvirtualdisplay import Display
 
 POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
+
+display = Display(visible=0, size=(800, 600))
+display.start()
+
 
 def _extract_post_from_element(element):
     html = element.get_attribute("outerHTML")
     soup = BeautifulSoup(html, 'html.parser')
     mid = int(soup.find('div', {"action-type": "feed_list_item"}).attrs['mid'])
-    uid = int(re.search(r"\/\/weibo.com\/(.*)(\?.*)", soup.find('a', class_="name").attrs['href']).group(1))
+    uid = int(re.search(r"\/\/weibo.com\/(.*)(\?.*)",
+                        soup.find('a', class_="name").attrs['href']).group(1))
     link = soup.find("p", class_="from").find('a').attrs['href']
     text = soup.find("p", class_="txt").getText()
     return {
@@ -28,6 +34,7 @@ def _extract_post_from_element(element):
         "visible": True,
         "censored": False
     }
+
 
 def extract_posts(url):
     try:
