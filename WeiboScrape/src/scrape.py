@@ -39,12 +39,12 @@ def _extract_post_from_element(element):
 
 def extract_posts(url):
     try:
-        options = webdriver.FirefoxOptions()
+        options = webdriver.ChromeOptions()
         if not opts.show_head():
-            options.add_argument("--headless")
-        binary = webdriver.firefox.firefox_binary.FirefoxBinary(firefox_path="/usr/bin/firefox")
-        time.sleep(10)
-        driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary, log_path="/var/log/geckodriver.log")
+            options.set_headless(headless=True)
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        driver = webdriver.Chrome(chrome_options=options)
         driver.get(url)
         elements = driver.find_elements_by_xpath(POST_XPATH)
         posts = [_extract_post_from_element(element) for element in elements]
