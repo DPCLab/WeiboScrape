@@ -1,6 +1,7 @@
-FROM python:3-stretch
+FROM ubuntu:latest
 RUN apt-get update && apt-get install -yq \
-    firefox-esr \
+    firefox \
+    python3-pip \
     git-core \
     xvfb \
     xsel \
@@ -18,6 +19,6 @@ RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.21.0/ge
 RUN chmod 777 /usr/bin/geckodriver
 WORKDIR /usr/src/app
 COPY WeiboScrape/requirements.txt ./
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 COPY WeiboScrape/src .
-ENTRYPOINT ["python", "coordinator.py"]
+ENTRYPOINT ["python3", "coordinator.py"]
