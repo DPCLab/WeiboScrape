@@ -13,23 +13,35 @@ import time
 
 POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
 
+
 def _extract_post_from_element(element):
-    html = element.get_attribute("outerHTML")
-    soup = BeautifulSoup(html, 'html.parser')
-    mid = int(soup.find('div', {"action-type": "feed_list_item"}).attrs['mid'])
-    uid = int(re.search(r"\/\/weibo.com\/(.*)(\?.*)",
-                        soup.find('a', class_="name").attrs['href']).group(1))
-    link = soup.find("p", class_="from").find('a').attrs['href']
-    text = soup.find("p", class_="txt").getText()
-    return {
-        "mid": mid,
-        "uid": uid,
-        "link": link,
-        "text": text,
-        "retrieved": datetime.now(),
-        "visible": True,
-        "censored": False
-    }
+    try:
+        html = element.get_attribute("outerHTML")
+        soup = BeautifulSoup(html, 'html.parser')
+        mid = int(
+            soup.find('div', {"action-type": "feed_list_item"}).attrs['mid'])
+        linksearch = "".join(re.findall(
+            r"(\/\/weibo.com\/)(\d*)(\/)([a-zA-Z0-9]*)", soup.prettify())[0])
+        link = "https:" + linksearch
+        uid = int(re.search(
+            r"(\/\/weibo.com\/)(\d*)(\/)([a-zA-Z0-9]*)", soup.prettify()).group(2))
+        text = soup.select_one(
+            "[node-type=\"feed_list_content\"]").getText().strip()
+        data = {
+            "mid": mid,
+            "uid": uid,
+            "link": link,
+            "text": text,
+            "retrieved": datetime.now(),
+            "visible": True,
+            "censored": False,
+            "completed": False
+        }
+        return data
+    except Exception as e:
+        logging.error(e)
+        traceback.print_exc()
+        return None
 
 
 def extract_posts(url):
@@ -43,9 +55,12 @@ def extract_posts(url):
         options.add_argument("--no-sandbox")
         driver = webdriver.Chrome(chrome_options=options)
         driver.get(url)
+        WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.XPATH, POST_XPATH))
+        )
         elements = driver.find_elements_by_xpath(POST_XPATH)
         posts = [_extract_post_from_element(element) for element in elements]
-        return posts
+        return [post for post in posts if post is not None]
     except Exception as e:
         logging.error(e)
         traceback.print_exc()
