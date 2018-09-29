@@ -48,6 +48,13 @@ def check_for_censorship():
                  len(now_invisible))
 
 
+def monitor_url():
+    url = sys.argv[2]
+    logging.info("Adding %s to monitored urls..." % url)
+    cloud.add_url_to_scrape_list(url)
+    logging.info("Added %s to monitored urls!" % url)
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         logging.error("Insufficient arguments!")
@@ -56,6 +63,8 @@ if __name__ == "__main__":
         pull_new_posts()
     if sys.argv[1] == "check":
         check_for_censorship()
+    if sys.argv[1] == "monitor":
+        monitor_url()
     if sys.argv[1] == "test_connection":
         import requests
         logging.info("Connection test result: %s" %
