@@ -28,7 +28,7 @@ def pull_new_posts():
     for post_group in post_groups:
         cloud.upsert_posts(post_group[0])
         cloud.mark_url_as_scraped(post_group[1])
-    logging.info("Pull complete! Found %s posts." % sum([len(post_group[0]) for post_group in post_groups]))
+    logging.info("Pull complete! Found %s posts across %s urls." % (sum([len(post_group[0]) for post_group in post_groups]), len(urls)))
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

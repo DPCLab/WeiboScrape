@@ -23,7 +23,7 @@ def get_urls_to_scrape():
         return [{"url": "https://www.weibo.com/u/6386565507"},
                 {"url": "https://s.weibo.com/weibo/ok?topnav=1&wvr=6&b=1"}]
     query = datastore_client.query(kind='WeiboUrl')
-    query.order = ['retrieved']
+    query.order = ['updated']
     return list(query.fetch())
 
 def add_url_to_scrape_list(url):
