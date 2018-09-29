@@ -9,6 +9,7 @@ def get_posts_to_check_on():
     query.add_filter('visible', '=', True)
     query.add_filter('retrieved', '<=', datetime.now() - timedelta(hours=1))
     query.add_filter('retrieved', '>=', datetime.now() - timedelta(hours=24))
+    query.add_filter('completed', '=', False)
     query.order = ['retrieved']
     return list(query.fetch())
 
@@ -16,7 +17,8 @@ def get_urls_to_scrape():
     logging.info("Loading urls to scrape...")
     if opts.is_local():
         logging.info("Local mode enabled; returning test data.")
-        return [{"url": "https://s.weibo.com/weibo/hi?topnav=1&wvr=6&b=1"}]
+        return [{"url": "https://www.weibo.com/u/6386565507"},
+                {"url": "https://s.weibo.com/weibo/ok?topnav=1&wvr=6&b=1"}]
     query = datastore_client.query(kind='WeiboUrl')
     query.order = ['updated']
     return list(query.fetch())
