@@ -98,7 +98,7 @@ def extract_posts(url):
         if tries > 0:
             logging.info("Failed to extract posts from %s; trying again (%s/3)" % (url, tries))
         try:
-            WebDriverWait(driver, 60).until(
+            WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, POST_XPATH))
             )
             elements = driver.find_elements_by_xpath(POST_XPATH)
@@ -109,7 +109,7 @@ def extract_posts(url):
             logging.error(e)
             traceback.print_exc()
         tries += 1
-        time.sleep(20)
+        time.sleep(60)
 
     logging.info("Aborting; failed to extract posts from %s" % url)
     driver.quit()
