@@ -32,7 +32,7 @@ def _extract_post_from_element(element):
             "uid": uid,
             "link": link,
             "text": text,
-            "retrieved": datetime.now(),
+            "retrieved": datetime.utcnow(),
             "visible": True,
             "censored": False,
             "completed": False
