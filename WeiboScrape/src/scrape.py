@@ -131,7 +131,7 @@ def extract_posts(url):
             posts = [_extract_post_from_element(
                 element) for element in elements]
             driver.quit()
-            return [post for post in posts if post is not None]
+            return [post for post in posts if post is not None and len(str(post['mid'])) > 12]
         except Exception as e:
             logging.error(e)
             traceback.print_exc()
