@@ -78,8 +78,8 @@ def _extract_post_from_element(element):
             "link": "https://www.weibo.com/%s/%s" % (uid, weibo_encode_mid(mid)),
             "retrieved": datetime.utcnow(),
             "visible": True,
-            "censored": False,
-            "completed": False
+            "censored": None,
+            "completed": None
         }
         return data
     except Exception as e:
