@@ -17,8 +17,24 @@ POST_XPATH = '//div[@action-type="feed_list_item" and @mid]'
 
 
 def weibo_encode_mid(mid):
-    mid_str = str(mid)
-    return "".join([_b62_encode(int(i)) for i in [mid_str[:2], mid_str[2:9], mid_str[9:16]]])
+    mid = str(mid)
+    hash = ''
+    end = len(mid)
+    while end > 0:
+        start = end - 7
+        if start < 0:
+            start = 0
+        num = mid[start:end]
+        h = _b62_encode(int(num))
+        padding = 4 - len(h)
+        if padding > 0 and start > 0:
+            for i in range(padding):
+                h = '0' + h
+        hash = h + hash
+        end -= 7
+    return hash
+    # mid_str = str(mid)
+    # return "".join([_b62_encode(int(i)) for i in [mid_str[:2], mid_str[2:9], mid_str[9:16]]])
 
 
 def _b62_encode(num):
@@ -59,6 +75,7 @@ def _extract_post_from_element(element):
             "mid": mid,
             "uid": uid,
             "text": text,
+            "link": "https://www.weibo.com/%s/%s" % (uid, weibo_encode_mid(mid)),
             "retrieved": datetime.utcnow(),
             "visible": True,
             "censored": False,
@@ -75,11 +92,11 @@ def _extract_post_from_element(element):
 def check_post_for_censorship(post):
     try:
         logging.info("Checking %s for censorship..." % post['mid'])
-        link = "https://weibo.com/%s/%s" % (post['uid'],
-                                            weibo_encode_mid(post['mid']))
-        posts_visible = extract_posts(link)
-        # if not post['mid'] in [post['mid'] for post in posts_visible]:
-        if len(posts_visible) == 0:
+        if 'link' not in post:
+            post['link'] = "https://weibo.com/%s/%s" % (post['uid'],
+                                                weibo_encode_mid(post['mid']))
+        posts_visible = extract_posts(post['link'])
+        if int(post['mid']) not in [int(post['mid']) for post in posts_visible]:
             post['visible'] = False
             logging.info("Message %s was censored! Not in %s. See %s" % (
                 post['mid'], [post['mid'] for post in posts_visible], post['link']))
