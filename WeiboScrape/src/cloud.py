@@ -18,6 +18,11 @@ def get_posts_to_check_on():
     # and the 'visible' and 'completed' fields.
     return [post for post in list(query.fetch()) if post["visible"] == True and post['completed'] == False]
 
+def get_invisible_posts():
+    logging.info("Loading invisible posts...")
+    query = datastore_client.query(kind='WeiboPost')
+    query.add_filter('visible', '=', False)
+    return list(query.fetch())
 
 def get_urls_to_scrape():
     logging.info("Loading urls to scrape...")

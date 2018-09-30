@@ -96,7 +96,8 @@ def check_post_for_censorship(post):
             post['link'] = "https://weibo.com/%s/%s" % (post['uid'],
                                                 weibo_encode_mid(post['mid']))
         posts_visible = extract_posts(post['link'])
-        if int(post['mid']) not in [int(post['mid']) for post in posts_visible]:
+        if int(post['mid']) not in [int(post['mid']) for post in posts_visible] and len(posts_visible) > 0:
+            # invisible posts redirect us to the homepage; errors return no posts. This prevent false negatives.
             post['visible'] = False
             logging.info("Message %s was censored! Not in %s. See %s" % (
                 post['mid'], [post['mid'] for post in posts_visible], post['link']))

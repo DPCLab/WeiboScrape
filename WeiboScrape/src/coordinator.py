@@ -56,6 +56,12 @@ def monitor_url():
     cloud.add_url_to_scrape_list(url)
     logging.info("Added %s to monitored urls!" % url)
 
+def mark_invisible_posts_as_visible():
+    logging.info("Marking invisible posts as visible...")
+    posts = cloud.get_invisible_posts()
+    for post in posts:
+        post['visible'] = True
+    cloud.upsert_posts(posts)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -67,6 +73,8 @@ if __name__ == "__main__":
         check_for_censorship()
     if sys.argv[1] == "monitor":
         monitor_url()
+    if sys.argv[1] == "revisible":
+        mark_invisible_posts_as_visible()
     if sys.argv[1] == "test_connection":
         import requests
         logging.info("Connection test result: %s" %
