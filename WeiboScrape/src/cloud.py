@@ -12,7 +12,7 @@ def get_posts_to_check_on():
     query.add_filter('retrieved', '>=', datetime.utcnow() -
                      timedelta(hours=24))
     # query.add_filter('completed', '=', False)
-    query.order = ['retrieved']
+    query.order = ['-retrieved']
     # The following is a workaround. Instead of building a special composite index, we simply perform the secondary
     # index locally. (The secondary index would be required because we have searches on both the 'retrieved' fields
     # and the 'visible' and 'completed' fields.
