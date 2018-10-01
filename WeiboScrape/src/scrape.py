@@ -93,7 +93,7 @@ def check_post_for_censorship(post):
     try:
         logging.info("Checking %s for censorship..." % post['mid'])
         if 'link' not in post:
-            post['link'] = "https://weibo.com/%s/%s" % (post['uid'],
+            post['link'] = "https://www.weibo.com/%s/%s" % (post['uid'],
                                                 weibo_encode_mid(post['mid']))
         posts_visible = extract_posts(post['link'])
         if int(post['mid']) not in [int(post['mid']) for post in posts_visible] and len(posts_visible) > 0:
