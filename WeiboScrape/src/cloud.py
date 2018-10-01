@@ -7,7 +7,7 @@ import logging
 def get_posts_to_check_on():
     logging.info("Loading posts to check on...")
     query = datastore_client.query(kind='WeiboPost')
-    # query.add_filter('visible', '=', True)
+    query.add_filter('visible', '=', True)
     # query.add_filter('retrieved', '<=', datetime.utcnow() - timedelta(hours=3))
     query.add_filter('retrieved', '>=', datetime.utcnow() -
                      timedelta(hours=24))

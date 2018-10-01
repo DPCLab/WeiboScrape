@@ -39,6 +39,7 @@ def _check_for_censorship_wrapper(post):
     checked_post = scrape.check_post_for_censorship(post)
     if checked_post['visible'] == False:
         cloud.upsert_posts([checked_post])
+    return checked_post
 
 def check_for_censorship():
     logging.info("Checking for censorship...")
