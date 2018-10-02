@@ -64,6 +64,13 @@ def mark_invisible_posts_as_visible():
         post['visible'] = True
     cloud.upsert_posts(posts)
 
+def add_potentially_censored_key_to_invisible_posts():
+    logging.info("Marking potentially censored posts as such...")
+    posts = cloud.get_invisible_posts()
+    for post in posts:
+        post['potentially_censored'] = True
+    cloud.upsert_posts(posts)
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         logging.error("Insufficient arguments!")
@@ -76,6 +83,8 @@ if __name__ == "__main__":
         monitor_url()
     if sys.argv[1] == "revisible":
         mark_invisible_posts_as_visible()
+    if sys.argv[1] == "markpotentiallycensored":
+        add_potentially_censored_key_to_invisible_posts()
     if sys.argv[1] == "test_connection":
         import requests
         logging.info("Connection test result: %s" %

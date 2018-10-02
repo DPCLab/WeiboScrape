@@ -70,6 +70,10 @@ def _generate_datastore_entity(post):
 
 
 def upsert_posts(posts):
+    if len(posts) > 500:
+        logging.info("Too many posts for single upsert (%s); batching..." % len(posts))
+        upsert_posts(posts[500:])
+        posts = posts[:500]
     logging.info("Upserting %s posts..." % str(len(posts)))
     if opts.is_local():
         logging.info("Aborting upsert because in local mode.")

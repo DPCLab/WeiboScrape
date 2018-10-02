@@ -99,6 +99,7 @@ def check_post_for_censorship(post):
         if int(post['mid']) not in [int(post['mid']) for post in posts_visible] and len(posts_visible) > 0:
             # invisible posts redirect us to the homepage; errors return no posts. This prevent false negatives.
             post['visible'] = False
+            post['potentially_censored'] = True # new key, for index aggregates
             logging.info("Message %s was censored! Not in %s. See %s" % (
                 post['mid'], [post['mid'] for post in posts_visible], post['link']))
     except Exception as e:
