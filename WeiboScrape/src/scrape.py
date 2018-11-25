@@ -116,8 +116,6 @@ def extract_posts(url):
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(chrome_options=options)
-    driver.get(url)
 
     tries = 0
     while tries < 3:
@@ -125,6 +123,8 @@ def extract_posts(url):
             logging.info(
                 "Failed to extract posts from %s; trying again (%s/3)" % (url, tries))
         try:
+            driver = webdriver.Chrome(chrome_options=options)
+            driver.get(url)
             WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, POST_XPATH))
             )
@@ -140,5 +140,4 @@ def extract_posts(url):
         time.sleep(60)
 
     logging.info("Aborting; failed to extract posts from %s" % url)
-    driver.quit()
     return []
